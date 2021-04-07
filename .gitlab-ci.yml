@@ -15,7 +15,7 @@ tests:
 
   before_script: &setup
     - pip install poetry
-    - poetry install --dev
+    - poetry install
     - poetry show
   script:
     - pytest --verbose --cov app --cov-report term-missing

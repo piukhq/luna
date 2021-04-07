@@ -1,7 +1,6 @@
 import logging
 
 from time import sleep
-from typing import Any
 
 import falcon
 
@@ -24,6 +23,21 @@ class PolarisEnrolCallback:
 
         return param
 
+    @staticmethod
+    def _get_cached_retries(key: str, value: int) -> int:
+        retries = cache.get(key, int)
+
+        if retries is not None:
+            if retries < 1:
+                cache.delete(key)
+            else:
+                cache.set(key, retries - 1)
+        else:
+            cache.set(key, value - 1)
+            retries = value
+
+        return retries
+
     def on_post(self, req: falcon.Request, resp: falcon.Response, route: str) -> None:
         if "timeout" in route:
             wait_time = self._get_secondary_param(route, DEFAULT_TIMEOUT_WAIT, 600, 0)
@@ -38,16 +52,7 @@ class PolarisEnrolCallback:
             except KeyError as e:
                 self.logger.exception("callback payload missing UUID.", exc_info=e)
             else:
-                retries = cache.get(uid, int)
-
-                if retries is not None:
-                    if retries < 1:
-                        cache.delete(uid)
-                    else:
-                        cache.set(uid, retries - 1)
-                else:
-                    cache.set(uid, req_retries - 1)
-                    retries = req_retries
+                retries = self._get_cached_retries(uid, req_retries)
 
                 if retries < 1:
                     resp.status = falcon.HTTP_200
