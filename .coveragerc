@@ -1,0 +1,10 @@
+[run]
+omit = *test*
+        tests
+        app/cache.py
+        app/reporting.py
+branch = True
+
+[report]
+fail_under = 85
+exclude_lines = pragma: no cover
