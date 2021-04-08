@@ -4,6 +4,8 @@ from time import sleep
 
 import falcon
 
+from falcon.status_codes import HTTP_500
+
 from app.settings import DEFAULT_FAILED_RESPONSES, DEFAULT_TIMEOUT_WAIT, cache
 
 
@@ -49,8 +51,9 @@ class PolarisEnrolCallback:
             req_retries = self._get_secondary_param(route, DEFAULT_FAILED_RESPONSES, 5, 1)
             try:
                 uid = req.media["UUID"]
-            except KeyError as e:
-                self.logger.exception("callback payload missing UUID.", exc_info=e)
+            except KeyError:
+                self.logger.error("callback payload missing UUID.")
+                raise falcon.HTTPError(status=falcon.HTTP_422, description="callback payload missing value: UUID.")
             else:
                 retries = self._get_cached_retries(uid, req_retries)
 
