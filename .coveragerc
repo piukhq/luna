@@ -3,6 +3,7 @@ omit = *test*
         tests
         app/cache.py
         app/reporting.py
+        app/healthz.py
 branch = True
 
 [report]

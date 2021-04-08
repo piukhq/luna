@@ -13,18 +13,18 @@ from app.cache import LocalCache, RedisCache
 def get_env(key: str, default: Any = None, *, conv: Callable = str) -> Any:
     val = os.getenv(key, default)
     if val is None:
-        raise KeyError("Missing required variable %s" % key)
+        raise KeyError("Missing required variable %s" % key)  # pragma: no cover
     else:
         return conv(val)
 
 
-def to_bool(val: str) -> bool:
+def to_bool(val: Union[str, bool]) -> bool:
     if isinstance(val, bool):
-        return val
+        return val  # pragma: no cover
 
     val = val.lower()
     if val not in ["true", "false"]:
-        raise KeyError("'%s' is not an acceptable value for a bool" % val)
+        raise KeyError("'%s' is not an acceptable value for a bool" % val)  # pragma: no cover
 
     return val == "true"
 
@@ -48,7 +48,7 @@ REDIS_DB = get_env("REDIS_DB", "6")
 cache: Union[RedisCache, LocalCache]
 
 if USE_REDIS_CACHE:
-    cache = RedisCache(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=REDIS_DB)
+    cache = RedisCache(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=REDIS_DB)  # pragma: no cover
 else:
     cache = LocalCache()
 
