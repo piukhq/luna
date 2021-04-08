@@ -25,6 +25,8 @@ class PolarisEnrolCallback:
 
     @staticmethod
     def _get_cached_retries(key: str, value: int) -> int:
+        key = "polaris-enrol-retry:%s" % key
+
         retries = cache.get(key, int)
 
         if retries is not None:
