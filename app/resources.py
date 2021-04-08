@@ -4,8 +4,6 @@ from time import sleep
 
 import falcon
 
-from falcon.status_codes import HTTP_500
-
 from app.settings import DEFAULT_FAILED_RESPONSES, DEFAULT_TIMEOUT_WAIT, cache
 
 
