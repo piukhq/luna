@@ -20,11 +20,11 @@ def get_env(key: str, default: Any = None, *, conv: Callable = str) -> Any:
 
 def to_bool(val: Union[str, bool]) -> bool:
     if isinstance(val, bool):
-        return val  # pragma: no cover
+        return val
 
     val = val.lower()
     if val not in ["true", "false"]:
-        raise KeyError("'%s' is not an acceptable value for a bool" % val)  # pragma: no cover
+        raise KeyError("'%s' is not an acceptable value for a bool" % val)
 
     return val == "true"
 
