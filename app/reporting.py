@@ -20,6 +20,6 @@ class JSONFormatter(logging.Formatter):
                 "module": record.module,
                 "function": record.funcName,
                 "name": record.name,
-                "message": record.msg,
+                "message": record.msg % record.args,
             }
         )
