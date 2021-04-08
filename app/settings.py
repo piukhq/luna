@@ -41,12 +41,13 @@ USE_REDIS_CACHE = get_env("USE_REDIS_CACHE", False, conv=to_bool)
 
 REDIS_HOST = get_env("REDIS_URI", "localhost")
 REDIS_PORT = get_env("REDIS_PORT", "6379")
+REDIS_PASSWORD = get_env("REDIS_PASSWORD", "")
 REDIS_DB = get_env("REDIS_DB", "6")
 
 cache: Union[RedisCache, LocalCache]
 
 if USE_REDIS_CACHE:
-    cache = RedisCache(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
+    cache = RedisCache(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=REDIS_DB)
 else:
     cache = LocalCache()
 
