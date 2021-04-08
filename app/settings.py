@@ -11,17 +11,17 @@ from app.cache import LocalCache, RedisCache
 
 
 def get_env(key: str, default: Any = None, *, conv: Callable = str) -> Any:
-    val = os.getenv(key, None)
+    val = os.getenv(key, default)
     if val is None:
-        if default is None:
-            raise KeyError("Missing required variable %s" % key)
-        else:
-            return default
+        raise KeyError("Missing required variable %s" % key)
     else:
         return conv(val)
 
 
 def to_bool(val: str) -> bool:
+    if isinstance(val, bool):
+        return val
+
     val = val.lower()
     if val not in ["true", "false"]:
         raise KeyError("'%s' is not an acceptable value for a bool" % val)
@@ -35,8 +35,8 @@ DEBUG = get_env("DEBUG", False, conv=to_bool)
 LUNA_PORT = get_env("LUNA_PORT", 9000, conv=int)
 LOG_FORMATTER = get_env("LOG_FORMATTER", "json")
 ROOT_LOG_LEVEL = get_env("ROOT_LOG_LEVEL", "INFO")
-DEFAULT_TIMEOUT_WAIT = get_env("ROOT_LOG_LEVEL", "150", conv=int)
-DEFAULT_FAILED_RESPONSES = get_env("DEFAULT_FAILED_RESPONSES", "3", conv=int)
+DEFAULT_TIMEOUT_WAIT = get_env("ROOT_LOG_LEVEL", 150, conv=int)
+DEFAULT_FAILED_RESPONSES = get_env("DEFAULT_FAILED_RESPONSES", 3, conv=int)
 USE_REDIS_CACHE = get_env("USE_REDIS_CACHE", False, conv=to_bool)
 
 REDIS_HOST = get_env("REDIS_URI", "localhost")
