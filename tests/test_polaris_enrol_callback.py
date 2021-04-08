@@ -37,7 +37,7 @@ def test_timeout_callback(client: "TestClient") -> None:
 def test_retry_callback(client: "TestClient", callback_payload: dict) -> None:
     requested_failures = 2
 
-    for i in range(requested_failures, 0, -1):
+    for i in range(requested_failures, -1, -1):
         resp = client.simulate_post("/enrol/callback/retry-%d" % requested_failures, json=callback_payload)
         assert resp.status_code == 200 if i == 0 else 500
 
