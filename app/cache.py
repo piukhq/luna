@@ -30,8 +30,13 @@ class LocalCache(metaclass=Singleton):
 
 
 class RedisCache(metaclass=Singleton):
-    def __init__(self, host: str, port: str, password: str, db: str) -> None:
-        self.redis = Redis(host=host, port=port, password=password, db=db)  # type: ignore
+    def __init__(self, redis_url: str) -> None:
+        self.redis = Redis.from_url(
+            redis_url,
+            socket_connect_timeout=10,
+            socket_keepalive=True,
+            retry_on_timeout=False,
+        )  # type: ignore
 
     def set(self, key: str, value: Any) -> None:
         self.redis.set(key, value)
