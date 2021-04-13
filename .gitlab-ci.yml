@@ -11,13 +11,12 @@ default:
 tests:
   stage: tests
   variables:
-    LOG_FORMATTER: brief
+    LOG_FORMATTER: gunicorn_style
 
   before_script: &setup
-    - pip install poetry
-    - poetry config virtualenvs.create false
-    - poetry install
-    - poetry show
+    - pip install pipenv
+    - pipenv install --dev --system --ignore-pipfile
+    - pip list
   script:
     - pytest --verbose --cov app --cov-report term-missing
 

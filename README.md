@@ -8,8 +8,8 @@ Test helper, Mock project, Jeff.
 
 ## running
 
-- `poetry install`
-- `poetry run python wsgi.py`
+- `pipenv install --dev`
+- `pipenv run python wsgi.py`
 
 ## unittest
-- `poetry run pytest tests --cov=app --cov-report=term-missing`
+- `pipenv run pytest tests --cov=app --cov-report=term-missing`
