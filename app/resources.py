@@ -64,9 +64,18 @@ class PolarisEnrolCallback:
                     resp.status = falcon.HTTP_500
                     resp.media = {"error": f"test callback retry, retries left before success {retries}"}
 
-        elif route == "error":
+        elif "error" in route:
             self.logger.info("received request for failed callback.")
-            resp.status = falcon.HTTP_500
+            default_http_error_status = 500
+            custom_status = self._get_secondary_param(route, default_http_error_status, 600, 200)
+            try:
+                response_status = getattr(falcon, f"HTTP_{custom_status}")
+            except AttributeError:
+                self.logger.warning(f"invalid requested HTTP status code: {custom_status} for url path: {route}. "
+                                    f"defaulting to HTTP status code: {default_http_error_status}.")
+                response_status = getattr(falcon, f"HTTP_{default_http_error_status}")
+
+            resp.status = response_status
             resp.media = {"error": "test callback error."}
 
         else:
