@@ -71,8 +71,10 @@ class PolarisEnrolCallback:
             try:
                 response_status = getattr(falcon, f"HTTP_{custom_status}")
             except AttributeError:
-                self.logger.warning(f"invalid requested HTTP status code: {custom_status} for url path: {route}. "
-                                    f"defaulting to HTTP status code: {default_http_error_status}.")
+                self.logger.warning(
+                    f"invalid requested HTTP status code: {custom_status} for url path: {route}. "
+                    f"defaulting to HTTP status code: {default_http_error_status}."
+                )
                 response_status = getattr(falcon, f"HTTP_{default_http_error_status}")
 
             resp.status = response_status
