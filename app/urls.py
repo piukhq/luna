@@ -7,6 +7,7 @@ URL = namedtuple("URL", ["uri_template", "resource"], defaults=[None, None])
 
 urlpatterns = [
     URL(URL_PREFIX + "/enrol/callback/{route}", resources.PolarisEnrolCallback()),
+    URL(URL_PREFIX + "/metadata/identity/oauth2/token", resources.PolarisCallbackOauth2Token()),
     URL("/livez", healthz.Livez()),
     URL("/readyz", healthz.Readyz()),
 ]

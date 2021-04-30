@@ -1,15 +1,16 @@
 import logging
 
+from datetime import datetime, timedelta
 from time import sleep
 
 import falcon
 
 from app.settings import DEFAULT_FAILED_RESPONSES, DEFAULT_TIMEOUT_WAIT, cache
 
+logger = logging.getLogger("Polaris")
+
 
 class PolarisEnrolCallback:
-    logger = logging.getLogger("Polaris")
-
     @staticmethod
     def _get_secondary_param(route: str, default_value: int, max_val: int, min_val: int) -> int:
         try:
@@ -43,7 +44,7 @@ class PolarisEnrolCallback:
     def on_post(self, req: falcon.Request, resp: falcon.Response, route: str) -> None:
         if "timeout" in route:
             wait_time = self._get_secondary_param(route, DEFAULT_TIMEOUT_WAIT, 600, 0)
-            self.logger.info(f"received request for timed out callback, waiting for {wait_time} seconds.")
+            logger.info(f"received request for timed out callback, waiting for {wait_time} seconds.")
             sleep(wait_time)
             resp.media = {"success": f"test callback timeout, waited for {wait_time} seconds."}
 
@@ -52,7 +53,7 @@ class PolarisEnrolCallback:
             try:
                 uid = req.media["UUID"]
             except KeyError:
-                self.logger.error("callback payload missing UUID.")
+                logger.error("callback payload missing UUID.")
                 raise falcon.HTTPError(status=falcon.HTTP_422, description="callback payload missing value: UUID.")
             else:
                 retries = self._get_cached_retries(uid, req_retries)
@@ -65,10 +66,27 @@ class PolarisEnrolCallback:
                     resp.media = {"error": f"test callback retry, retries left before success {retries}"}
 
         elif route == "error":
-            self.logger.info("received request for failed callback.")
+            logger.info("received request for failed callback.")
             resp.status = falcon.HTTP_500
             resp.media = {"error": "test callback error."}
 
         else:
-            self.logger.info("received request for successful callback.")
+            logger.info("received request for successful callback.")
             resp.media = {"success": "test callback success"}
+
+
+class PolarisCallbackOauth2Token:
+    token_life = 86400  # 24 hours
+
+    def on_get(self, req: falcon.Request, resp: falcon.Response) -> None:
+        now = datetime.now()
+        shift = timedelta(seconds=self.token_life)
+        resp.media = {
+            "access_token": "luna-mock-token",
+            "refresh_token": "",
+            "expires_in": str(self.token_life),
+            "expires_on": int((now + shift).timestamp()),
+            "not_before": int(now.timestamp()),
+            "resource": req.params.get("resource", "N/A"),
+            "token_type": "Bearer",
+        }
