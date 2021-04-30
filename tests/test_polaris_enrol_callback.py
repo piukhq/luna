@@ -21,8 +21,18 @@ def test_successful_callback(client: "TestClient") -> None:
     assert resp.status_code == 200
 
 
-def test_error_callback(client: "TestClient") -> None:
+def test_default_error_callback(client: "TestClient") -> None:
     resp = client.simulate_post("/enrol/callback/error")
+    assert resp.status_code == 500
+
+
+def test_custom_error_callback(client: "TestClient") -> None:
+    resp = client.simulate_post("/enrol/callback/error-400")
+    assert resp.status_code == 400
+
+
+def test_error_callback_with_invalid_http_status(client: "TestClient") -> None:
+    resp = client.simulate_post("/enrol/callback/error-599")
     assert resp.status_code == 500
 
 
