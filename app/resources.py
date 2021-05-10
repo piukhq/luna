@@ -102,3 +102,9 @@ class PolarisCallbackOauth2Token:
             "token_type": "Bearer",
         }
         logger.info("recevied request for a callback Oauth2 token.")
+
+
+class ActiveCampaignSlugs:
+    def on_get(self, req: falcon.Request, resp: falcon.Response, retailer_slug) -> None:
+        resp.media = [f"mocked-{retailer_slug}-active-campaign"]
+        resp.status = falcon.HTTP_200
