@@ -105,6 +105,6 @@ class PolarisCallbackOauth2Token:
 
 
 class ActiveCampaignSlugs:
-    def on_get(self, req: falcon.Request, resp: falcon.Response, retailer_slug) -> None:
+    def on_get(self, req: falcon.Request, resp: falcon.Response, retailer_slug: str) -> None:
         resp.media = [f"mocked-{retailer_slug}-active-campaign"]
         resp.status = falcon.HTTP_200
