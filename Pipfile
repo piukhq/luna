@@ -12,6 +12,7 @@ name = "bink-pypi"
 falcon = "*"
 gunicorn = "*"
 redis = "*"
+python-dotenv = "*"
 
 [dev-packages]
 black = "*"
@@ -23,7 +24,6 @@ pytest = "*"
 pytest-cov = "*"
 xenon = "*"
 types-redis = "*"
-python-dotenv = "*"
 
 [requires]
 python_version = "3.9"
