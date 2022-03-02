@@ -10,7 +10,7 @@ def test_successful_get(client: "TestClient") -> None:
     expected_response = [f"mocked-{retailer_slug}-active-campaign"]
 
     # WHEN
-    resp = client.simulate_get(f"/bpl/rewards/{retailer_slug}/active-campaign-slugs")
+    resp = client.simulate_get(f"/bpl/campaigns/{retailer_slug}/active-campaign-slugs")
 
     # THEN
     assert resp.status_code == 200
