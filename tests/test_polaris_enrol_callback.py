@@ -5,14 +5,14 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from app.resources import PolarisEnrolCallback
+from luna.resources import PolarisEnrolCallback
 
 if TYPE_CHECKING:
     from falcon.testing import TestClient
 
 
-@pytest.fixture(scope="module")
-def callback_payload() -> dict:
+@pytest.fixture(scope="module", name="callback_payload")
+def fixture_callback_payload() -> dict:
     return {"UUID": str(uuid.uuid4())}
 
 
@@ -62,17 +62,25 @@ def test_get_secondary_param() -> None:
     min_val = 3
 
     test_value = 8
-    result = PolarisEnrolCallback._get_secondary_param(route % test_value, default_value, max_val, min_val)
+    result = PolarisEnrolCallback._get_secondary_param(  # pylint: disable=protected-access
+        route % test_value, default_value, max_val, min_val
+    )
     assert result == test_value
 
     test_value = 11
-    result = PolarisEnrolCallback._get_secondary_param(route % test_value, default_value, max_val, min_val)
+    result = PolarisEnrolCallback._get_secondary_param(  # pylint: disable=protected-access
+        route % test_value, default_value, max_val, min_val
+    )
     assert result == default_value
 
     test_value = 2
-    result = PolarisEnrolCallback._get_secondary_param(route % test_value, default_value, max_val, min_val)
+    result = PolarisEnrolCallback._get_secondary_param(  # pylint: disable=protected-access
+        route % test_value, default_value, max_val, min_val
+    )
     assert result == default_value
 
     route = "retry"
-    result = PolarisEnrolCallback._get_secondary_param(route, default_value, max_val, min_val)
+    result = PolarisEnrolCallback._get_secondary_param(  # pylint: disable=protected-access
+        route, default_value, max_val, min_val
+    )
     assert result == default_value
