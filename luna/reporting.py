@@ -3,9 +3,9 @@ import logging
 
 
 class JSONFormatter(logging.Formatter):
-    # noinspection PyMissingConstructor
-    def __init__(self) -> None:
-        pass
+    # # noinspection PyMissingConstructor
+    # def __init__(self) -> None:
+    #     pass
 
     def format(self, record: logging.LogRecord) -> str:
         return json.dumps(

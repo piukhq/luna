@@ -1,9 +1,9 @@
 [run]
 omit = *test*
         tests
-        app/cache.py
-        app/reporting.py
-        app/healthz.py
+        luna/cache.py
+        luna/reporting.py
+        luna/healthz.py
 branch = True
 
 [report]

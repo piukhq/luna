@@ -3,29 +3,27 @@ import os
 import sys
 
 from logging.config import dictConfig
-from typing import Any, Callable, Union
+from typing import Any, Callable
 
 from dotenv import load_dotenv
 
-from app.cache import LocalCache, RedisCache
+from luna.cache import LocalCache, RedisCache
 
 
 def get_env(key: str, default: Any = None, *, conv: Callable = str) -> Any:
     val = os.getenv(key, default)
     if val is None:
         raise KeyError("Missing required variable %s" % key)  # pragma: no cover
-    else:
-        return conv(val)
+    return conv(val)
 
 
-def to_bool(val: Union[str, bool]) -> bool:
+def to_bool(val: str | bool) -> bool:
     if isinstance(val, bool):
         return val
 
     val = val.lower()
     if val not in ["true", "false"]:
         raise KeyError("'%s' is not an acceptable value for a bool" % val)
-
     return val == "true"
 
 
@@ -40,7 +38,7 @@ DEFAULT_FAILED_RESPONSES = get_env("DEFAULT_FAILED_RESPONSES", 3, conv=int)
 URL_PREFIX = get_env("URL_PREFIX", "")
 USE_REDIS_CACHE = get_env("USE_REDIS_CACHE", False, conv=to_bool)
 
-cache: Union[RedisCache, LocalCache]
+cache: RedisCache | LocalCache
 
 if USE_REDIS_CACHE:
     REDIS_URL = get_env("REDIS_URL")  # pragma: no cover
@@ -58,7 +56,7 @@ dictConfig(
                 "datefmt": "%Y-%m-%d %H:%M:%S %z",
             },
             "brief": {"format": "%(levelname)s:     %(asctime)s - %(message)s"},
-            "json": {"()": "app.reporting.JSONFormatter"},
+            "json": {"()": "luna.reporting.JSONFormatter"},
         },
         "handlers": {
             "stderr": {
