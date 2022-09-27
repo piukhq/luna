@@ -1,6 +1,6 @@
 import pytest
 
-from app.settings import to_bool
+from luna.settings import to_bool
 
 
 def test_to_bool() -> None:

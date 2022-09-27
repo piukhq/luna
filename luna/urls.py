@@ -1,7 +1,7 @@
 from collections import namedtuple
 
-from app import healthz, resources
-from app.settings import URL_PREFIX
+from luna import healthz, resources
+from luna.settings import URL_PREFIX
 
 URL = namedtuple("URL", ["uri_template", "resource"], defaults=[None, None])
 

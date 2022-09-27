@@ -5,7 +5,7 @@ from time import sleep
 
 import falcon
 
-from app.settings import DEFAULT_FAILED_RESPONSES, DEFAULT_TIMEOUT_WAIT, cache
+from luna.settings import DEFAULT_FAILED_RESPONSES, DEFAULT_TIMEOUT_WAIT, cache
 
 logger = logging.getLogger("Polaris")
 
@@ -54,7 +54,9 @@ class PolarisEnrolCallback:
                 uid = req.media["UUID"]
             except KeyError:
                 logger.error("callback payload missing UUID.")
-                raise falcon.HTTPError(status=falcon.HTTP_422, description="callback payload missing value: UUID.")
+                raise falcon.HTTPError(  # pylint: disable=raise-missing-from
+                    status=falcon.HTTP_422, description="callback payload missing value: UUID."
+                )
             else:
                 retries = self._get_cached_retries(uid, req_retries)
 
@@ -105,6 +107,8 @@ class PolarisCallbackOauth2Token:
 
 
 class ActiveCampaignSlugs:
-    def on_get(self, req: falcon.Request, resp: falcon.Response, retailer_slug: str) -> None:
+    def on_get(
+        self, req: falcon.Request, resp: falcon.Response, retailer_slug: str  # pylint: disable=unused-argument
+    ) -> None:
         resp.media = [f"mocked-{retailer_slug}-active-campaign"]
         resp.status = falcon.HTTP_200

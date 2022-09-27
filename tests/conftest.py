@@ -2,7 +2,7 @@ import pytest
 
 from falcon import testing
 
-from app import create_app
+from luna import create_app
 
 
 @pytest.fixture(scope="session")
