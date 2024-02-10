@@ -36,9 +36,9 @@ disable = [
     "missing-class-docstring",
     "too-few-public-methods",
     "consider-using-f-string",
-    "duplicate-code", # pylint definition of "duplicate" is way too loose (ex: fastapi route definitions are flagged).
+    "duplicate-code",                # pylint definition of "duplicate" is way too loose (ex: fastapi route definitions are flagged).
 ]
-good-names=["k", "v", "i", "q", "fn", "ex", "dt", "tz"]
+good-names = ["k", "v", "i", "q", "fn", "ex", "dt", "tz"]
 
 [tool.black]
 line-length = 120
@@ -60,8 +60,6 @@ lines_between_types = 1
 
 [tool.poetry-dynamic-versioning]
 enable = true
-vcs = "git"
-pattern = '^((?P<epoch>\d+)!)?(?P<base>\d+(\.\d+)*)'
 
 [tool.poetry-dynamic-versioning.substitution]
 files = ['luna/version.py']
