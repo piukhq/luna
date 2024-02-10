@@ -1,0 +1,26 @@
+name: tests
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    env:
+      LOG_FORMATTER: gunicorn_style
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: pip install poetry
+      - run: poetry config virtualenvs.create false
+      - run: poetry install
+      - run: pylint luna tests
+      - run: black --check .
+      - run: isort --check .
+      - run: xenon --no-assert --max-average A --max-modules B --max-absolute B .
+      - run: mypy .
+      - run: pytest --verbose --cov luna --cov-report term-missing
