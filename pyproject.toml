@@ -15,7 +15,7 @@ python-dotenv = "^0.21.0"
 werkzeug = "^2.3.8"
 
 [tool.poetry.group.dev.dependencies]
-black = "^22.8.0"
+black = "^24.3.0"
 isort = "^5.10.1"
 mypy = "^0.971"
 pytest = "^7.1.3"
